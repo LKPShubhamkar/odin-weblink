@@ -63,7 +63,10 @@ const AccountMenu = ({ onMenuClick }: AccountMenuProps) => {
         {menus.map((item, index) => (
           <ListItemButton
             key={item.id}
-            onClick={() => onMenuClick(item.id)}
+            onClick={
+              item.id !== "ddpi" ? () => onMenuClick(item.id) : undefined
+            }
+            disabled={item.id === "ddpi"}
             sx={{
               height: 88,
               px: 3,
@@ -71,7 +74,14 @@ const AccountMenu = ({ onMenuClick }: AccountMenuProps) => {
                 index !== menus.length - 1 ? "1px solid #F2F2F2" : "none",
 
               "&:hover": {
-                bgcolor: "#fafafa",
+                bgcolor: item.id !== "ddpi" ? "#fafafa" : "transparent",
+              },
+
+              "&.Mui-disabled": {
+                opacity: 1, // keep the same appearance
+                cursor: "default",
+                pointerEvents: "none",
+                bgcolor: "#fff",
               },
             }}
           >
@@ -98,7 +108,7 @@ const AccountMenu = ({ onMenuClick }: AccountMenuProps) => {
               }}
             />
 
-            {item.chip && (
+            {item.chip ? (
               <Chip
                 label={item.chip}
                 size="small"
@@ -112,14 +122,14 @@ const AccountMenu = ({ onMenuClick }: AccountMenuProps) => {
                   borderRadius: "6px",
                 }}
               />
+            ) : (
+              <ChevronRightIcon
+                sx={{
+                  color: "#233A7D",
+                  fontSize: "22px",
+                }}
+              />
             )}
-
-            <ChevronRightIcon
-              sx={{
-                color: "#233A7D",
-                fontSize: "22px",
-              }}
-            />
           </ListItemButton>
         ))}
       </List>
