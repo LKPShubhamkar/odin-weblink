@@ -11,7 +11,20 @@ import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 
-const menus = ["Raise a Ticket", "Open Tickets", "Closed Tickets"];
+const menus = [
+  {
+    title: "Raise a Ticket",
+    path: "/help-support/raise-ticket",
+  },
+  {
+    title: "Open Tickets",
+    path: "/help-support/open-ticket",
+  },
+  {
+    title: "Closed Tickets",
+    path: "/help-support/close-ticket",
+  },
+];
 
 const HelpSupport = () => {
   const navigate = useNavigate();
@@ -103,16 +116,16 @@ const HelpSupport = () => {
 
           <List disablePadding>
             {menus.map((item) => (
-              <Box key={item}>
+              <Box key={item.title}>
                 <ListItemButton
-                  onClick={() => console.log(item)}
+                  onClick={() => navigate(item.path)}
                   sx={{
                     px: 0,
                     py: 2,
                   }}
                 >
                   <ListItemText
-                    primary={item}
+                    primary={item.title}
                     slotProps={{
                       primary: {
                         sx: {

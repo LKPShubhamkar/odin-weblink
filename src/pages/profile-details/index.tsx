@@ -296,7 +296,11 @@ const ProfileDetails = () => {
                     ml: 1,
                     alignSelf: "center",
                   }}
-                  onClick={() => handleEdit(field.apiType)}
+                  onClick={() => {
+                    if (field.apiType) {
+                      handleEdit(field.apiType);
+                    }
+                  }}
                 >
                   <EditOutlinedIcon
                     sx={{
