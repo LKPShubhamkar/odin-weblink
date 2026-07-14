@@ -18,7 +18,12 @@ const Header = ({ title, showBack = false, onBack }: HeaderProps) => {
         borderBottom: "1px solid #ECECEC",
       }}
     >
-      <Toolbar sx={{ minHeight: "56px" }}>
+      <Toolbar
+        sx={{
+          minHeight: "56px",
+          position: "relative",
+        }}
+      >
         {showBack && (
           <IconButton
             onClick={onBack}
@@ -26,6 +31,7 @@ const Header = ({ title, showBack = false, onBack }: HeaderProps) => {
             sx={{
               mr: 1,
               color: "#1F4C8F",
+              zIndex: 1,
             }}
           >
             <ArrowBackIcon />
@@ -37,6 +43,28 @@ const Header = ({ title, showBack = false, onBack }: HeaderProps) => {
             fontWeight: 600,
             fontSize: 20,
             fontFamily: "Poppins",
+
+            position: {
+              xs: "absolute",
+              md: "static",
+            },
+            left: {
+              xs: "50%",
+              md: "auto",
+            },
+            transform: {
+              xs: "translateX(-50%)",
+              md: "none",
+            },
+            width: {
+              xs: "100%",
+              md: "auto",
+            },
+            textAlign: {
+              xs: "center",
+              md: "left",
+            },
+            pointerEvents: "none",
           }}
         >
           {title}

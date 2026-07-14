@@ -77,6 +77,23 @@ const Segments = () => {
     },
   ];
 
+  const handleEdit = async () => {
+    try {
+      const response = await commonApi("ReKyc/GetReKycURL_internal", {
+        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        apiType: "Segments",
+      });
+
+      if (response?.data?.deeplink) {
+        window.open(response.data.deeplink, "_blank");
+      } else {
+        alert(response?.message || "Unable to generate link");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -185,6 +202,7 @@ const Segments = () => {
               bgcolor: "#00458A",
             },
           }}
+          onClick={() => handleEdit()}
         >
           Manage Segments
         </Button>

@@ -75,6 +75,7 @@ const BankCard = ({ bank }: { bank: any }) => (
           },
           flex: 1,
           minWidth: 0,
+          alignItems: "center",
         }}
       >
         <AccountBalanceIcon
@@ -102,7 +103,7 @@ const BankCard = ({ bank }: { bank: any }) => (
             {bank.bankName}
           </Typography>
 
-          <Typography
+          {/* <Typography
             sx={{
               fontSize: 12,
               color: "#9B9B9B",
@@ -119,7 +120,7 @@ const BankCard = ({ bank }: { bank: any }) => (
             }}
           >
             {bank.ifsc}
-          </Typography>
+          </Typography> */}
         </Box>
       </Stack>
 
@@ -145,7 +146,7 @@ const BankCard = ({ bank }: { bank: any }) => (
 
     <Row label="IFSC Code" value={bank.ifsc} />
 
-    <Stack
+    {/* <Stack
       sx={{
         mt: 2,
         flexDirection: "row",
@@ -168,12 +169,29 @@ const BankCard = ({ bank }: { bank: any }) => (
       >
         {bank.bankName.toUpperCase()}
       </Typography>
-    </Stack>
+    </Stack> */}
   </Box>
 );
 
 export default function BankDetails() {
   const [data, setData] = useState<any[]>([]);
+
+  const handleEdit = async () => {
+    try {
+      const response = await commonApi("ReKyc/GetReKycURL_internal", {
+        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        apiType: "Bank",
+      });
+
+      if (response?.data?.deeplink) {
+        window.open(response.data.deeplink, "_blank");
+      } else {
+        alert(response?.message || "Unable to generate link");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchBankDetails = async () => {
@@ -251,6 +269,7 @@ export default function BankDetails() {
               bgcolor: "#00458A",
             },
           }}
+          onClick={() => handleEdit()}
         >
           Add New Bank
         </Button>

@@ -18,6 +18,7 @@ interface Field {
   value: string;
   icon?: ReactNode;
   action?: "edit" | "copy";
+  apiType?: string;
 }
 
 interface Section {
@@ -72,18 +73,21 @@ const ProfileDetails = () => {
           value: profile.mobile,
           icon: <PhoneAndroidOutlinedIcon />,
           action: "edit",
+          apiType: "Mobile",
         },
         {
           label: "Email",
           value: profile.email,
           icon: <AlternateEmailOutlinedIcon />,
           action: "edit",
+          apiType: "Email",
         },
         {
           label: "Address",
           value: profile.address,
           icon: <HomeOutlinedIcon />,
           action: "edit",
+          apiType: "Address",
         },
         {
           label: "PAN",
@@ -105,6 +109,7 @@ const ProfileDetails = () => {
           value: profile.incomeRange,
           icon: <CurrencyRupeeOutlinedIcon />,
           action: "edit",
+          apiType: "Income",
         },
       ],
     },
@@ -143,8 +148,21 @@ const ProfileDetails = () => {
     },
   ];
 
-  const handleEdit = (field: string, value: string) => {
-    console.log("Edit:", field, value);
+  const handleEdit = async (apiType: string) => {
+    try {
+      const response = await commonApi("ReKyc/GetReKycURL_internal", {
+        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        apiType,
+      });
+
+      if (response?.data?.deeplink) {
+        window.open(response.data.deeplink, "_blank");
+      } else {
+        alert(response?.message || "Unable to generate link");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleCopy = async (value: string) => {
@@ -278,7 +296,7 @@ const ProfileDetails = () => {
                     ml: 1,
                     alignSelf: "center",
                   }}
-                  onClick={() => handleEdit(field.label, field.value)}
+                  onClick={() => handleEdit(field.apiType)}
                 >
                   <EditOutlinedIcon
                     sx={{
