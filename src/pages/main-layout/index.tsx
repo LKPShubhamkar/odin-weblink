@@ -34,7 +34,26 @@ const Main = () => {
         onBack={() => setSelectedPage(null)}
       />
 
-      <Container maxWidth="lg" sx={{ mt: 4, width: 800 }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          mt: {
+            xs: 2,
+            md: 4,
+          },
+
+          width: {
+            xs: "100%",
+            md: 800,
+          },
+
+          px: {
+            xs: 2,
+            sm: 3,
+            md: 0,
+          },
+        }}
+      >
         {selectedPage === null ? (
           <AccountMenu onMenuClick={setSelectedPage} />
         ) : (

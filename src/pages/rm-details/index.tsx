@@ -44,19 +44,40 @@ const RmDetails = () => {
 
   return (
     <>
-      <Header title="RM Details" showBack onBack={() => navigate("/")} />
+      <Header
+        title="Relation Manager Details"
+        showBack
+        onBack={() => navigate("/")}
+      />
 
       <Container
         maxWidth="lg"
         sx={{
-          mt: 4,
-          width: 800,
+          mt: {
+            xs: 2,
+            md: 4,
+          },
+          width: {
+            xs: "100%",
+            md: 800,
+          },
+          px: {
+            xs: 2,
+            md: 3,
+          },
         }}
       >
         <Box
           sx={{
             bgcolor: "#fff",
-            px: 3,
+            px: {
+              xs: 2,
+              md: 3,
+            },
+            py: {
+              xs: 1,
+              md: 0,
+            },
           }}
         >
           {details.map((item, index) => (
@@ -64,23 +85,43 @@ const RmDetails = () => {
               <Stack
                 sx={{
                   flexDirection: "row",
-                  gap: 2,
+                  gap: {
+                    xs: 1.5,
+                    md: 2,
+                  },
                   py: 1.5,
+                  alignItems: "flex-start",
                 }}
               >
                 <Box
                   sx={{
                     color: "#0054A6",
                     mt: 0.5,
+                    flexShrink: 0,
+
+                    "& svg": {
+                      fontSize: {
+                        xs: 22,
+                        md: 24,
+                      },
+                    },
                   }}
                 >
                   {item.icon}
                 </Box>
 
-                <Box>
+                <Box
+                  sx={{
+                    minWidth: 0,
+                    flex: 1,
+                  }}
+                >
                   <Typography
                     sx={{
-                      fontSize: 11,
+                      fontSize: {
+                        xs: 12,
+                        md: 11,
+                      },
                       color: "#9B9B9B",
                     }}
                   >
@@ -89,9 +130,14 @@ const RmDetails = () => {
 
                   <Typography
                     sx={{
-                      fontSize: 15,
-                      color: "#212121",
                       mt: 0.3,
+                      fontSize: {
+                        xs: 15,
+                        md: 15,
+                      },
+                      color: "#212121",
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
                     }}
                   >
                     {item.value}
@@ -100,9 +146,13 @@ const RmDetails = () => {
                   {item.subText && (
                     <Typography
                       sx={{
-                        fontSize: 11,
+                        mt: 0.4,
+                        fontSize: {
+                          xs: 12,
+                          md: 11,
+                        },
                         color: "#9B9B9B",
-                        mt: 0.3,
+                        lineHeight: 1.4,
                       }}
                     >
                       {item.subText}

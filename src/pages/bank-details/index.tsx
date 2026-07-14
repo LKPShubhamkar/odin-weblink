@@ -53,7 +53,10 @@ const Row = ({ label, value }: { label: string; value: string }) => (
     >
       <Typography
         sx={{
-          fontSize: 11,
+          fontSize: {
+            xs: 12,
+            md: 11,
+          },
           color: "#9B9B9B",
         }}
       >
@@ -63,8 +66,12 @@ const Row = ({ label, value }: { label: string; value: string }) => (
       <Typography
         sx={{
           mt: 0.3,
-          fontSize: 14,
+          fontSize: {
+            xs: 15,
+            md: 14,
+          },
           color: "#222",
+          wordBreak: "break-word",
         }}
       >
         {value}
@@ -78,35 +85,51 @@ const Row = ({ label, value }: { label: string; value: string }) => (
 const BankCard = ({ bank }: { bank: (typeof data)[0] }) => (
   <Box
     sx={{
-      px: 2,
+      px: {
+        xs: 0,
+        md: 2,
+      },
     }}
   >
     <Stack
       sx={{
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "flex-start",
         mb: 2,
       }}
     >
       <Stack
         sx={{
           flexDirection: "row",
-          gap: 1,
+          gap: {
+            xs: 1.5,
+            md: 1,
+          },
+          flex: 1,
+          minWidth: 0,
         }}
       >
         <AccountBalanceIcon
           sx={{
             color: "#0054A6",
-            fontSize: 24,
+            fontSize: {
+              xs: 40,
+              md: 24,
+            },
+            flexShrink: 0,
           }}
         />
 
-        <Box>
+        <Box sx={{ minWidth: 0 }}>
           <Typography
             sx={{
               fontWeight: 600,
-              fontSize: 18,
+              fontSize: {
+                xs: 17,
+                md: 18,
+              },
+              wordBreak: "break-word",
             }}
           >
             {bank.bankName}
@@ -116,6 +139,7 @@ const BankCard = ({ bank }: { bank: (typeof data)[0] }) => (
             sx={{
               fontSize: 12,
               color: "#9B9B9B",
+              wordBreak: "break-word",
             }}
           >
             {bank.bankAccno}
@@ -137,6 +161,7 @@ const BankCard = ({ bank }: { bank: (typeof data)[0] }) => (
           label="Primary"
           size="small"
           sx={{
+            ml: 1,
             bgcolor: "#2F80ED",
             color: "#fff",
             fontSize: 11,
@@ -183,13 +208,12 @@ const BankCard = ({ bank }: { bank: (typeof data)[0] }) => (
 export default function BankDetails() {
   return (
     <Box
-      sx={
-        {
-          // bgcolor: "#fff",
-        }
-      }
+      sx={{
+        // bgcolor: "#fff",
+        pb: 2,
+      }}
     >
-      <Grid container spacing={4}>
+      <Grid container spacing={{ xs: 3, md: 4 }}>
         {data.map((bank, index) => (
           <Grid
             key={index}
@@ -197,6 +221,14 @@ export default function BankDetails() {
             sx={{
               borderRight: {
                 md: index % 2 === 0 ? "1px solid #E8E8E8" : "none",
+              },
+              borderBottom: {
+                xs: index !== data.length - 1 ? "1px solid #E8E8E8" : "none",
+                md: "none",
+              },
+              pb: {
+                xs: 3,
+                md: 0,
               },
             }}
           >
@@ -215,7 +247,12 @@ export default function BankDetails() {
         <Button
           variant="contained"
           sx={{
-            width: 260,
+            width: {
+              xs: "100%",
+              sm: 280,
+              md: 260,
+            },
+            maxWidth: 320,
             height: 44,
             bgcolor: "#0054A6",
             borderRadius: "10px",

@@ -1,7 +1,14 @@
-import { Container } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 
@@ -17,6 +24,7 @@ const data = [
     phone: "022-65461948",
   },
 ];
+
 const CallTradeDetails = () => {
   const navigate = useNavigate();
 
@@ -31,14 +39,31 @@ const CallTradeDetails = () => {
       <Container
         maxWidth="lg"
         sx={{
-          mt: 4,
-          width: 800,
+          mt: {
+            xs: 2,
+            md: 4,
+          },
+          width: {
+            xs: "100%",
+            md: 800,
+          },
+          px: {
+            xs: 2,
+            md: 0,
+          },
         }}
       >
         <Box
           sx={{
             bgcolor: "#fff",
-            px: 3,
+            px: {
+              xs: 2,
+              md: 3,
+            },
+            borderRadius: {
+              xs: 2,
+              md: 0,
+            },
           }}
         >
           {data.map((item, index) => (
@@ -47,31 +72,48 @@ const CallTradeDetails = () => {
                 sx={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems: "center",
-                  py: 2,
+                  alignItems: "flex-start",
+                  py: {
+                    xs: 2,
+                    md: 2,
+                  },
+                  gap: 2,
                 }}
               >
                 <Stack
                   sx={{
                     flexDirection: "row",
-                    gap: 2,
+                    gap: {
+                      xs: 1.5,
+                      md: 2,
+                    },
+                    flex: 1,
+                    minWidth: 0,
                   }}
                 >
                   <LocalPhoneOutlinedIcon
                     sx={{
                       color: "#0054A6",
-                      fontSize: 28,
+                      fontSize: {
+                        xs: 24,
+                        md: 28,
+                      },
                       mt: 0.5,
+                      flexShrink: 0,
                     }}
                   />
 
-                  <Box>
+                  <Box sx={{ minWidth: 0 }}>
                     <Typography
                       sx={{
-                        fontSize: 14,
+                        fontSize: {
+                          xs: 15,
+                          md: 14,
+                        },
                         fontWeight: 600,
                         color: "#212121",
-                        lineHeight: 1.3,
+                        lineHeight: 1.4,
+                        wordBreak: "break-word",
                       }}
                     >
                       {item.title}
@@ -79,7 +121,11 @@ const CallTradeDetails = () => {
 
                     <Typography
                       sx={{
-                        fontSize: 12,
+                        mt: 0.3,
+                        fontSize: {
+                          xs: 12,
+                          md: 12,
+                        },
                         fontWeight: 600,
                         color: "#212121",
                       }}
@@ -97,7 +143,10 @@ const CallTradeDetails = () => {
                     >
                       <Typography
                         sx={{
-                          fontSize: 14,
+                          fontSize: {
+                            xs: 15,
+                            md: 14,
+                          },
                           color: "#9E9E9E",
                         }}
                       >
@@ -114,7 +163,10 @@ const CallTradeDetails = () => {
                       >
                         <CallOutlinedIcon
                           sx={{
-                            fontSize: 18,
+                            fontSize: {
+                              xs: 20,
+                              md: 18,
+                            },
                           }}
                         />
                       </IconButton>

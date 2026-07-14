@@ -100,7 +100,11 @@ const AccountMenu = ({ onMenuClick }: AccountMenuProps) => {
               slotProps={{
                 primary: {
                   sx: {
-                    fontSize: "22px",
+                    fontSize: {
+                      xs: "16px",
+                      md: "20px",
+                    },
+                    paddingRight: 2,
                     fontWeight: 400,
                     color: "#292929",
                   },
@@ -115,7 +119,11 @@ const AccountMenu = ({ onMenuClick }: AccountMenuProps) => {
                 sx={{
                   mr: 2,
                   height: 22,
-                  fontSize: 11,
+                  fontSize: {
+                    xs: "10px",
+                    md: "11px",
+                  },
+
                   bgcolor: "#E8F7EE",
                   color: "#27AE60",
                   fontWeight: 500,

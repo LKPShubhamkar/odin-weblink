@@ -127,14 +127,34 @@ const handleCopy = async (value: string) => {
     console.error("Failed to copy", err);
   }
 };
+
 const ProfileDetails = () => {
   return (
-    <Box sx={{ bgcolor: "#fff", p: 3 }}>
+    <Box
+      sx={{
+        bgcolor: "#fff",
+        p: {
+          xs: 1,
+          md: 3,
+        },
+      }}
+    >
       {sections.map((section) => (
-        <Box key={section.title} sx={{ mb: 4 }}>
+        <Box
+          key={section.title}
+          sx={{
+            mb: {
+              xs: 3,
+              md: 4,
+            },
+          }}
+        >
           <Typography
             sx={{
-              fontSize: 15,
+              fontSize: {
+                xs: 14,
+                md: 15,
+              },
               color: "#9B9B9B",
               mb: 1,
               fontWeight: 500,
@@ -151,14 +171,21 @@ const ProfileDetails = () => {
                 borderBottom: "1px solid #EEEEEE",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                alignItems: "center",
+                alignItems: "flex-start",
+                gap: 1,
               }}
             >
               <Stack
-                direction="row"
-                spacing={2}
                 sx={{
-                  maxWidth: "80%",
+                  flexDirection: "row",
+                  gap: {
+                    xs: 1.5,
+                    md: 2,
+                  },
+                  maxWidth: {
+                    xs: "calc(100% - 36px)",
+                    md: "80%",
+                  },
                   minWidth: 0,
                   flex: 1,
                 }}
@@ -168,8 +195,18 @@ const ProfileDetails = () => {
                     sx={{
                       color: "#004AAD",
                       mt: 0.4,
-                      width: 22,
+                      width: {
+                        xs: 20,
+                        md: 22,
+                      },
                       flexShrink: 0,
+
+                      "& svg": {
+                        fontSize: {
+                          xs: 20,
+                          md: 24,
+                        },
+                      },
                     }}
                   >
                     {field.icon}
@@ -179,7 +216,10 @@ const ProfileDetails = () => {
                 <Box sx={{ minWidth: 0 }}>
                   <Typography
                     sx={{
-                      fontSize: 14,
+                      fontSize: {
+                        xs: 12,
+                        md: 14,
+                      },
                       color: "#999",
                     }}
                   >
@@ -189,7 +229,11 @@ const ProfileDetails = () => {
                   <Typography
                     sx={{
                       mt: 0.3,
-                      fontSize: 16,
+                      fontSize: {
+                        xs: 14,
+                        md: 16,
+                      },
+                      lineHeight: 1.4,
                       color: "#222",
                       whiteSpace: "pre-wrap",
                       wordBreak: "break-word",
@@ -204,12 +248,19 @@ const ProfileDetails = () => {
               {field.action === "edit" && (
                 <IconButton
                   size="small"
+                  sx={{
+                    ml: 1,
+                    alignSelf: "center",
+                  }}
                   onClick={() => handleEdit(field.label, field.value)}
                 >
                   <EditOutlinedIcon
                     sx={{
                       color: "#2E2D72",
-                      fontSize: 18,
+                      fontSize: {
+                        xs: 20,
+                        md: 18,
+                      },
                     }}
                   />
                 </IconButton>
@@ -218,12 +269,19 @@ const ProfileDetails = () => {
               {field.action === "copy" && (
                 <IconButton
                   size="small"
+                  sx={{
+                    ml: 1,
+                    alignSelf: "center",
+                  }}
                   onClick={() => handleCopy(field.value)}
                 >
                   <ContentCopyOutlinedIcon
                     sx={{
                       color: "#2E2D72",
-                      fontSize: 18,
+                      fontSize: {
+                        xs: 20,
+                        md: 18,
+                      },
                     }}
                   />
                 </IconButton>

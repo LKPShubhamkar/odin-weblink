@@ -57,7 +57,10 @@ const Segments = () => {
     <Box
       sx={{
         bgcolor: "#fff",
-        p: 4,
+        p: {
+          xs: 1,
+          md: 4,
+        },
       }}
     >
       {segments.map((item) => {
@@ -70,14 +73,24 @@ const Segments = () => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                py: 2.5,
+                gap: 2,
+                py: {
+                  xs: 2,
+                  md: 2.5,
+                },
               }}
             >
               <Typography
                 sx={{
-                  fontSize: 18,
+                  flex: 1,
+                  minWidth: 0,
+                  fontSize: {
+                    xs: 15,
+                    md: 18,
+                  },
                   color: "#222",
                   fontWeight: 400,
+                  lineHeight: 1.4,
                 }}
               >
                 {item.label}
@@ -87,10 +100,20 @@ const Segments = () => {
                 label={active ? "Active" : "Inactive"}
                 size="small"
                 sx={{
-                  minWidth: 84,
-                  height: 30,
+                  flexShrink: 0,
+                  minWidth: {
+                    xs: 74,
+                    md: 84,
+                  },
+                  height: {
+                    xs: 28,
+                    md: 30,
+                  },
                   borderRadius: "8px",
-                  fontSize: 14,
+                  fontSize: {
+                    xs: 12,
+                    md: 14,
+                  },
                   fontWeight: 500,
                   bgcolor: active ? "#E6F5ED" : "#FCEAEA",
                   color: active ? "#1FA971" : "#E53935",
@@ -107,18 +130,32 @@ const Segments = () => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          mt: 5,
+          mt: {
+            xs: 4,
+            md: 5,
+          },
         }}
       >
         <Button
           variant="contained"
           sx={{
-            width: 320,
-            height: 54,
+            width: {
+              xs: "100%",
+              sm: 320,
+              md: 320,
+            },
+            maxWidth: 360,
+            height: {
+              xs: 48,
+              md: 54,
+            },
             bgcolor: "#0054A6",
             borderRadius: "12px",
             textTransform: "none",
-            fontSize: 18,
+            fontSize: {
+              xs: 16,
+              md: 18,
+            },
             fontWeight: 600,
             "&:hover": {
               bgcolor: "#00458A",

@@ -33,11 +33,15 @@ const Row = ({ label, value }: { label: string; value: string }) => (
         justifyContent: "space-between",
         alignItems: "center",
         py: 1.5,
+        gap: 2,
       }}
     >
       <Typography
         sx={{
-          fontSize: 14,
+          fontSize: {
+            xs: 13,
+            md: 14,
+          },
           color: "#8E8E8E",
         }}
       >
@@ -46,9 +50,14 @@ const Row = ({ label, value }: { label: string; value: string }) => (
 
       <Typography
         sx={{
-          fontSize: 16,
+          fontSize: {
+            xs: 15,
+            md: 16,
+          },
           color: "#222",
           fontWeight: 500,
+          textAlign: "right",
+          wordBreak: "break-word",
         }}
       >
         {value || "-"}
@@ -61,13 +70,19 @@ const Row = ({ label, value }: { label: string; value: string }) => (
 
 const NomineeDetails = () => {
   return (
-    <Box sx={{}}>
+    <Box>
       <Typography
         sx={{
-          fontSize: 24,
+          fontSize: {
+            xs: 20,
+            md: 24,
+          },
           fontWeight: 600,
           color: "#222",
-          mb: 4,
+          mb: {
+            xs: 3,
+            md: 4,
+          },
         }}
       >
         Nominee List
@@ -80,22 +95,40 @@ const NomineeDetails = () => {
             xs: "1fr",
             md: "repeat(2,1fr)",
           },
-          gap: 4,
+          gap: {
+            xs: 3,
+            md: 4,
+          },
         }}
       >
         {nominees.map((item, index) => (
           <Box
             key={item.title}
             sx={{
-              px: 4,
+              px: {
+                xs: 0,
+                md: 4,
+              },
+              pb: {
+                xs: 2,
+                md: 0,
+              },
               borderRight: {
                 md: index === 0 ? "1px solid #E8E8E8" : "none",
+              },
+              borderBottom: {
+                xs:
+                  index !== nominees.length - 1 ? "1px solid #E8E8E8" : "none",
+                md: "none",
               },
             }}
           >
             <Typography
               sx={{
-                fontSize: 20,
+                fontSize: {
+                  xs: 18,
+                  md: 20,
+                },
                 fontWeight: 600,
                 color: "#222",
                 mb: 2,
@@ -114,11 +147,15 @@ const NomineeDetails = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 py: 1.5,
+                gap: 2,
               }}
             >
               <Typography
                 sx={{
-                  fontSize: 14,
+                  fontSize: {
+                    xs: 13,
+                    md: 14,
+                  },
                   color: "#8E8E8E",
                 }}
               >
@@ -127,8 +164,12 @@ const NomineeDetails = () => {
 
               <Typography
                 sx={{
-                  fontSize: 16,
+                  fontSize: {
+                    xs: 15,
+                    md: 16,
+                  },
                   fontWeight: 500,
+                  textAlign: "right",
                 }}
               >
                 {item.share || "-"}
@@ -142,18 +183,32 @@ const NomineeDetails = () => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          mt: 6,
+          mt: {
+            xs: 4,
+            md: 6,
+          },
         }}
       >
         <Button
           variant="contained"
           sx={{
-            width: 320,
-            height: 54,
+            width: {
+              xs: "100%",
+              sm: 320,
+              md: 320,
+            },
+            maxWidth: 360,
+            height: {
+              xs: 48,
+              md: 54,
+            },
             bgcolor: "#0054A6",
             borderRadius: "12px",
             textTransform: "none",
-            fontSize: 18,
+            fontSize: {
+              xs: 16,
+              md: 18,
+            },
             fontWeight: 600,
             "&:hover": {
               bgcolor: "#00458A",

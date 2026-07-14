@@ -23,14 +23,28 @@ const HelpSupport = () => {
       <Container
         maxWidth="lg"
         sx={{
-          mt: 4,
-          width: 800,
+          mt: { xs: 2, md: 4 },
+          width: {
+            xs: "100%",
+            md: 800,
+          },
+          px: {
+            xs: 1,
+            md: 0,
+          },
         }}
       >
         <Box
           sx={{
             bgcolor: "#fff",
-            px: 3,
+            px: {
+              xs: 2,
+              md: 3,
+            },
+            borderRadius: {
+              xs: 2,
+              md: 0,
+            },
           }}
         >
           <Box
