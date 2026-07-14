@@ -8,41 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-
-const data = [
-  {
-    clientCode: "23120368",
-    bankAccountHolderName: "HIREN ARUNBHAI PATEL",
-    bankAccno: "32151491328",
-    ifsc: "SBIN0000344",
-    bankName: "State Bank Of India",
-    defaultBank: "N",
-  },
-  {
-    clientCode: "23120368",
-    bankAccountHolderName: "HIREN ARUNBHAI PATEL",
-    bankAccno: "50100360881161",
-    ifsc: "HDFC0001685",
-    bankName: "HDFC Bank",
-    defaultBank: "N",
-  },
-  {
-    clientCode: "23120368",
-    bankAccountHolderName: "HIREN ARUNBHAI PATEL",
-    bankAccno: "50100470979422",
-    ifsc: "HDFC0001685",
-    bankName: "HDFC Bank",
-    defaultBank: "Y",
-  },
-  {
-    clientCode: "23120368",
-    bankAccountHolderName: "HIREN ARUNBHAI PATEL",
-    bankAccno: "919010007936263",
-    ifsc: "UTIB0002638",
-    bankName: "Axis Bank",
-    defaultBank: "N",
-  },
-];
+import { useEffect, useState } from "react";
+import { commonApi } from "../../services";
 
 const Row = ({ label, value }: { label: string; value: string }) => (
   <>
@@ -82,7 +49,7 @@ const Row = ({ label, value }: { label: string; value: string }) => (
   </>
 );
 
-const BankCard = ({ bank }: { bank: (typeof data)[0] }) => (
+const BankCard = ({ bank }: { bank: any }) => (
   <Box
     sx={{
       px: {
@@ -206,6 +173,27 @@ const BankCard = ({ bank }: { bank: (typeof data)[0] }) => (
 );
 
 export default function BankDetails() {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchBankDetails = async () => {
+      try {
+        const response = await commonApi("AppLink/GetClientBankDetails", {
+          clientCode: "mQrPkoR6Hlq6nRefctWDvA==",
+        });
+
+        setData(response?.data || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchBankDetails();
+  }, []);
+
+  if (!data.length) {
+    return null; // or CircularProgress
+  }
   return (
     <Box
       sx={{

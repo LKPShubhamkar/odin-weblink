@@ -1,58 +1,82 @@
 import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { commonApi } from "../../services";
 
-const data = {
-  clientCode: "23120368",
-  nseEquity: "NSE",
-  bseEquity: "BSE",
-  nseFutOpt: "",
-  bseFutOpt: "",
-  nseCurrency: "",
-  mcxCommodity: "",
-  nseCommodity: "",
-  nseslbm: "",
-  mutualFund: "",
-};
-
-const segments = [
-  {
-    label: "NSE Equity",
-    value: data.nseEquity,
-  },
-  {
-    label: "BSE Equity",
-    value: data.bseEquity,
-  },
-  {
-    label: "NSE Future and Options",
-    value: data.nseFutOpt,
-  },
-  {
-    label: "BSE Future and Options",
-    value: data.bseFutOpt,
-  },
-  {
-    label: "NSE Currency",
-    value: data.nseCurrency,
-  },
-  {
-    label: "NSE Commodity",
-    value: data.nseCommodity,
-  },
-  {
-    label: "MCX Commodity",
-    value: data.mcxCommodity,
-  },
-  {
-    label: "NSE SLBM",
-    value: data.nseslbm,
-  },
-  {
-    label: "Mutual Fund",
-    value: data.mutualFund,
-  },
-];
+interface SegmentData {
+  clientCode: string;
+  nseEquity: string;
+  bseEquity: string;
+  nseFutOpt: string;
+  bseFutOpt: string;
+  nseCurrency: string;
+  mcxCommodity: string;
+  nseCommodity: string;
+  nseslbm: string;
+  mutualFund: string;
+}
 
 const Segments = () => {
+  const [data, setData] = useState<SegmentData | null>(null);
+
+  useEffect(() => {
+    const fetchSegments = async () => {
+      try {
+        const response = await commonApi("AppLink/GetClientSegments", {
+          clientCode: "mQrPkoR6Hlq6nRefctWDvA==",
+        });
+
+        setData(response?.data || null);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchSegments();
+  }, []);
+
+  if (!data) {
+    return null;
+  }
+
+  const segments = [
+    {
+      label: "NSE Equity",
+      value: data.nseEquity,
+    },
+    {
+      label: "BSE Equity",
+      value: data.bseEquity,
+    },
+    {
+      label: "NSE Future and Options",
+      value: data.nseFutOpt,
+    },
+    {
+      label: "BSE Future and Options",
+      value: data.bseFutOpt,
+    },
+    {
+      label: "NSE Currency",
+      value: data.nseCurrency,
+    },
+    {
+      label: "NSE Commodity",
+      value: data.nseCommodity,
+    },
+    {
+      label: "MCX Commodity",
+      value: data.mcxCommodity,
+    },
+    {
+      label: "NSE SLBM",
+      value: data.nseslbm,
+    },
+    {
+      label: "Mutual Fund",
+      value: data.mutualFund,
+    },
+  ];
+
   return (
     <Box
       sx={{

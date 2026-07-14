@@ -10,125 +10,151 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import { commonApi } from "../../services";
+import { useEffect, useState, type ReactNode } from "react";
 
-const data = [
-  {
-    clientCode: "MT0600508",
-    fullName: "Hareshkumar S Darji",
-    mobile: "9819494550",
-    email: "test@TextsmsTwoTone.com",
-    address:
-      "C-701 7TH FLOOR SUPREME LEGACY SHREE HARI NIWAS CHSL SAROJINI NAIDU NEAR BHURABHAI HALL KANDIVALI WEST MUMBAI 400067",
-    pan: "ALAPD6986B",
-    gender: "Male",
-    dob: "18-01-1984",
-    incomeRange: "Less Than One Lakhs",
-    ckycno: "10012301677544",
-    dematAccount: "1203000001123371",
-    dpId: "12030000",
-    depository: "CDSL",
-  },
-];
-const profile = data[0];
-const sections = [
-  {
-    title: "Profile Details",
-    fields: [
-      {
-        label: "Full Name",
-        value: profile.fullName,
-        icon: <PersonOutlinedIcon />,
-      },
-      {
-        label: "Mobile",
-        value: profile.mobile,
-        icon: <PhoneAndroidOutlinedIcon />,
-        action: "edit",
-      },
-      {
-        label: "Email",
-        value: profile.email,
-        icon: <AlternateEmailOutlinedIcon />,
-        action: "edit",
-      },
-      {
-        label: "Address",
-        value: profile.address,
-        icon: <HomeOutlinedIcon />,
-        action: "edit",
-      },
-      {
-        label: "PAN",
-        value: profile.pan,
-        icon: <CreditCardOutlinedIcon />,
-      },
-      {
-        label: "Gender",
-        value: profile.gender,
-        icon: <WcOutlinedIcon />,
-      },
-      {
-        label: "Date of Birth",
-        value: profile.dob,
-        icon: <CalendarMonthOutlinedIcon />,
-      },
-      {
-        label: "Income Range",
-        value: profile.incomeRange,
-        icon: <CurrencyRupeeOutlinedIcon />,
-        action: "edit",
-      },
-    ],
-  },
-  {
-    title: "Trading Account Details",
-    fields: [
-      {
-        label: "UCC / Client ID",
-        value: profile.clientCode,
-      },
-      {
-        label: "CKYC",
-        value: profile.ckycno,
-      },
-    ],
-  },
-  {
-    title: "Demat Account Details",
-    fields: [
-      {
-        label: "Demat Account No / BO ID",
-        value: profile.dematAccount,
-        action: "copy",
-      },
-      {
-        label: "DP ID",
-        value: profile.dpId,
-        action: "copy",
-      },
-      {
-        label: "Depository",
-        value: profile.depository,
-        action: "copy",
-      },
-    ],
-  },
-];
+interface Field {
+  label: string;
+  value: string;
+  icon?: ReactNode;
+  action?: "edit" | "copy";
+}
 
-const handleEdit = (field: string, value: string) => {
-  console.log("Edit:", field, value);
-};
-
-const handleCopy = async (value: string) => {
-  try {
-    await navigator.clipboard.writeText(value);
-    console.log("Copied:", value);
-  } catch (err) {
-    console.error("Failed to copy", err);
-  }
-};
+interface Section {
+  title: string;
+  fields: Field[];
+}
 
 const ProfileDetails = () => {
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchClientData = async () => {
+      try {
+        const response = await commonApi("AppLink/GetClientData", {
+          clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        });
+
+        setProfile(response?.data || null);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchClientData();
+  }, []);
+
+  if (!profile) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          py: 6,
+        }}
+      >
+        Loading...
+      </Box>
+    );
+  }
+
+  const sections: Section[] = [
+    {
+      title: "Profile Details",
+      fields: [
+        {
+          label: "Full Name",
+          value: profile.fullName,
+          icon: <PersonOutlinedIcon />,
+        },
+        {
+          label: "Mobile",
+          value: profile.mobile,
+          icon: <PhoneAndroidOutlinedIcon />,
+          action: "edit",
+        },
+        {
+          label: "Email",
+          value: profile.email,
+          icon: <AlternateEmailOutlinedIcon />,
+          action: "edit",
+        },
+        {
+          label: "Address",
+          value: profile.address,
+          icon: <HomeOutlinedIcon />,
+          action: "edit",
+        },
+        {
+          label: "PAN",
+          value: profile.pan,
+          icon: <CreditCardOutlinedIcon />,
+        },
+        {
+          label: "Gender",
+          value: profile.gender,
+          icon: <WcOutlinedIcon />,
+        },
+        {
+          label: "Date of Birth",
+          value: profile.dob,
+          icon: <CalendarMonthOutlinedIcon />,
+        },
+        {
+          label: "Income Range",
+          value: profile.incomeRange,
+          icon: <CurrencyRupeeOutlinedIcon />,
+          action: "edit",
+        },
+      ],
+    },
+    {
+      title: "Trading Account Details",
+      fields: [
+        {
+          label: "UCC / Client ID",
+          value: profile.clientCode,
+        },
+        {
+          label: "CKYC",
+          value: profile.ckycno,
+        },
+      ],
+    },
+    {
+      title: "Demat Account Details",
+      fields: [
+        {
+          label: "Demat Account No / BO ID",
+          value: profile.dematAccount,
+          action: "copy",
+        },
+        {
+          label: "DP ID",
+          value: profile.dpId,
+          action: "copy",
+        },
+        {
+          label: "Depository",
+          value: profile.depository,
+          action: "copy",
+        },
+      ],
+    },
+  ];
+
+  const handleEdit = (field: string, value: string) => {
+    console.log("Edit:", field, value);
+  };
+
+  const handleCopy = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      console.log("Copied:", value);
+    } catch (err) {
+      console.error("Failed to copy", err);
+    }
+  };
   return (
     <Box
       sx={{

@@ -1,29 +1,6 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-
-const data = {
-  clientCode: "98444",
-  nominee1Name: "HITEN SHAILESH DIVECHA",
-  nominee1Relation: "Spouse",
-  nomine1Share: "",
-  nominee2Name: "",
-  nominee2Relation: "",
-  nomine2Share: "",
-};
-
-const nominees = [
-  {
-    title: "Nominee 1",
-    name: data.nominee1Name,
-    relation: data.nominee1Relation,
-    share: data.nomine1Share,
-  },
-  {
-    title: "Nominee 2",
-    name: data.nominee2Name,
-    relation: data.nominee2Relation,
-    share: data.nomine2Share,
-  },
-];
+import { useEffect, useState } from "react";
+import { commonApi } from "../../services";
 
 const Row = ({ label, value }: { label: string; value: string }) => (
   <>
@@ -69,6 +46,43 @@ const Row = ({ label, value }: { label: string; value: string }) => (
 );
 
 const NomineeDetails = () => {
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchNomineeDetails = async () => {
+      try {
+        const response = await commonApi("AppLink/GetClientNominee", {
+          clientCode: "0Om9GfLExAwn/nNtacr3Tw==",
+        });
+
+        setData(response?.data || null);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchNomineeDetails();
+  }, []);
+
+  if (!data) {
+    return null; // or CircularProgress
+  }
+
+  const nominees = [
+    {
+      title: "Nominee 1",
+      name: data.nominee1Name,
+      relation: data.nominee1Relation,
+      share: data.nomine1Share,
+    },
+    {
+      title: "Nominee 2",
+      name: data.nominee2Name,
+      relation: data.nominee2Relation,
+      share: data.nomine2Share,
+    },
+  ];
+
   return (
     <Box>
       <Typography
