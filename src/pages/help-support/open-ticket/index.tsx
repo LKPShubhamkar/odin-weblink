@@ -1,9 +1,33 @@
-import Header from "../../../components/Header";
 import { Box, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Header from "../../../components/Header";
+import { useMemo } from "react";
+import TicketCard from "./TicketCard/TicketCard";
+import { ticketDetails, ticketList } from "../../../helper/commonData";
+
+// Sample List API Response
 
 const OpenTicket = () => {
   const navigate = useNavigate();
+
+  const tickets = useMemo(() => {
+    return ticketList
+      .filter((ticket) => ticket.status === "Open")
+      .map((ticket) => {
+        const detail = ticketDetails.find(
+          (item) => item.ticketId === ticket.id,
+        );
+
+        return {
+          ...ticket,
+          description: detail?.description ?? "",
+          attachments: detail?.attachments ?? [],
+          resolution: detail?.resolution ?? "",
+          modifiedDate: detail?.modifiedDate ?? "",
+        };
+      });
+  }, []);
+
   return (
     <>
       <Header
@@ -28,12 +52,15 @@ const OpenTicket = () => {
       >
         <Box
           sx={{
-            minHeight: "calc(100vh - 150px)",
             display: "flex",
             flexDirection: "column",
+            gap: 2,
+            pb: 4,
           }}
         >
-          Pending
+          {tickets.map((ticket) => (
+            <TicketCard key={ticket.id} ticket={ticket} />
+          ))}
         </Box>
       </Container>
     </>

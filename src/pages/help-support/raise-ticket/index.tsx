@@ -159,6 +159,9 @@ const RaiseTicket = () => {
                   md: 160,
                 },
               }}
+              onClick={() => {
+                console.log(subject, description, fileName);
+              }}
             >
               Submit
             </Button>

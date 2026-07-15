@@ -10,7 +10,7 @@ import CloseTicket from "./pages/help-support/close-ticket";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/LKPWebLink">
       <Routes>
         <Route path="/" element={<Main />} />
 
