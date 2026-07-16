@@ -177,9 +177,11 @@ export default function BankDetails() {
   const [data, setData] = useState<any[]>([]);
 
   const handleEdit = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const clientCode = params.get("clientcode")?.replace(/ /g, "+");
     try {
       const response = await commonApi("ReKyc/GetReKycURL_internal", {
-        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        clientCode,
         apiType: "Bank",
       });
 
@@ -195,9 +197,11 @@ export default function BankDetails() {
 
   useEffect(() => {
     const fetchBankDetails = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
       try {
         const response = await commonApi("AppLink/GetClientBankDetails", {
-          clientCode: "mQrPkoR6Hlq6nRefctWDvA==",
+          clientCode,
         });
 
         setData(response?.data || []);

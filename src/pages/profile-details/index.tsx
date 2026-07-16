@@ -31,9 +31,11 @@ const ProfileDetails = () => {
 
   useEffect(() => {
     const fetchClientData = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
       try {
         const response = await commonApi("AppLink/GetClientData", {
-          clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+          clientCode,
         });
 
         setProfile(response?.data || null);
@@ -149,9 +151,11 @@ const ProfileDetails = () => {
   ];
 
   const handleEdit = async (apiType: string) => {
+    const params = new URLSearchParams(window.location.search);
+    const clientCode = params.get("clientcode")?.replace(/ /g, "+");
     try {
       const response = await commonApi("ReKyc/GetReKycURL_internal", {
-        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        clientCode,
         apiType,
       });
 

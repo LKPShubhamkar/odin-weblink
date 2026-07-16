@@ -50,9 +50,11 @@ const NomineeDetails = () => {
 
   useEffect(() => {
     const fetchNomineeDetails = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
       try {
         const response = await commonApi("AppLink/GetClientNominee", {
-          clientCode: "0Om9GfLExAwn/nNtacr3Tw==",
+          clientCode,
         });
 
         setData(response?.data || null);
@@ -84,9 +86,11 @@ const NomineeDetails = () => {
   ];
 
   const handleEdit = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const clientCode = params.get("clientcode")?.replace(/ /g, "+");
     try {
       const response = await commonApi("ReKyc/GetReKycURL_internal", {
-        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        clientCode,
         apiType: "Nominee",
       });
 

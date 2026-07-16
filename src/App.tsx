@@ -7,6 +7,7 @@ import RmDetails from "./pages/rm-details";
 import RaiseTicket from "./pages/help-support/raise-ticket";
 import OpenTicket from "./pages/help-support/open-ticket";
 import CloseTicket from "./pages/help-support/close-ticket";
+import ReKyc from "./pages/Rekyc";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/help-support/close-ticket" element={<CloseTicket />} />
 
         <Route path="/rm-details" element={<RmDetails />} />
+        <Route path="/LKP-ReKyc" element={<ReKyc />} />
       </Routes>
     </BrowserRouter>
   );

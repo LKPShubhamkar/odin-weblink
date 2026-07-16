@@ -20,9 +20,11 @@ const Segments = () => {
 
   useEffect(() => {
     const fetchSegments = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
       try {
         const response = await commonApi("AppLink/GetClientSegments", {
-          clientCode: "mQrPkoR6Hlq6nRefctWDvA==",
+          clientCode,
         });
 
         setData(response?.data || null);
@@ -78,9 +80,11 @@ const Segments = () => {
   ];
 
   const handleEdit = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const clientCode = params.get("clientcode")?.replace(/ /g, "+");
     try {
       const response = await commonApi("ReKyc/GetReKycURL_internal", {
-        clientCode: "hEZHddEppw+ubNhjCdwD3A==",
+        clientCode,
         apiType: "Segments",
       });
 
