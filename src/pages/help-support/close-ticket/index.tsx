@@ -3,7 +3,7 @@ import { Box, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ticketDetails, ticketList } from "../../../helper/commonData";
 import { useMemo } from "react";
-import TicketCard from "../open-ticket/TicketCard/TicketCard";
+import TicketCard from "../../../components/TicketCard/TicketCard";
 
 const CloseTicket = () => {
   const navigate = useNavigate();
