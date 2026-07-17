@@ -7,41 +7,69 @@ import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlin
 
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
+import { useEffect, useState } from "react";
+import { commonApi } from "../../services";
 
-const rm = {
-  name: "Ritik Patel",
-  address: "Lorem ipsum dolor sit amet,",
-  phone: "02265651948",
-  email: "Lorem ipsum@gmail.com",
-};
-
-const details = [
-  {
-    label: "Relation Manager",
-    value: rm.name,
-    icon: <PersonOutlineOutlinedIcon />,
-  },
-  {
-    label: "Dealing Office Address",
-    value: rm.address,
-    icon: <HomeOutlinedIcon />,
-  },
-  {
-    label: "Dealing Desk Number",
-    value: rm.phone,
-    subText: "(Available from 9.30 am to 3.30 pm)",
-    icon: <PhoneAndroidOutlinedIcon />,
-  },
-  {
-    label: "RM Email ID",
-    value: rm.email,
-    icon: <AlternateEmailOutlinedIcon />,
-  },
-];
+interface RMDetailsData {
+  clientCode: string;
+  rmName: string;
+  telephone: string;
+  mobile: string;
+  rmAddress: string;
+  rmEmail: string;
+  address: string;
+}
 
 const RmDetails = () => {
+  const [data, setData] = useState<RMDetailsData | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchBankDetails = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
+      try {
+        const response = await commonApi("AppLink/GetClientRMDetails", {
+          clientCode,
+        });
+        console.log(response, "AppLink/GetClientRMDetails");
+
+        setData(response?.data || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchBankDetails();
+  }, []);
+  const details = [
+    {
+      label: "Relation Manager",
+      value: data?.rmName ?? "-",
+      icon: <PersonOutlineOutlinedIcon />,
+    },
+    {
+      label: "Dealing Office Address",
+      value: data?.address || data?.rmAddress || "-",
+      icon: <HomeOutlinedIcon />,
+    },
+    {
+      label: "Dealing Desk Number",
+      value: data?.telephone ?? "-",
+      subText: "(Available from 9.30 am to 3.30 pm)",
+      icon: <PhoneAndroidOutlinedIcon />,
+    },
+    {
+      label: "RM Mobile Number",
+      value: data?.mobile ?? "-",
+      icon: <PhoneAndroidOutlinedIcon />,
+    },
+    {
+      label: "RM Email ID",
+      value: data?.rmEmail ?? "-",
+      icon: <AlternateEmailOutlinedIcon />,
+    },
+  ];
   return (
     <>
       <Header
