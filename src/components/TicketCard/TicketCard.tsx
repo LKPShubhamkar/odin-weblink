@@ -9,6 +9,7 @@ import {
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 
 interface Attachment {
@@ -22,6 +23,7 @@ interface Ticket {
   subject: string;
   status: string;
   createdDate: string;
+  loading?: boolean;
 }
 
 interface TicketDetail {
@@ -121,10 +123,11 @@ const TicketCard = ({ ticket, onLoadDetails }: TicketCardProps) => {
           </Stack>
           <IconButton
             size="small"
+            disabled={ticket.loading}
             onClick={() => {
               setExpanded((prev) => !prev);
 
-              if (!expanded && !ticket.details) {
+              if (!expanded && !ticket.details && !ticket.loading) {
                 onLoadDetails(ticket.id);
               }
             }}
@@ -138,55 +141,19 @@ const TicketCard = ({ ticket, onLoadDetails }: TicketCardProps) => {
         </Stack>
 
         <Collapse in={expanded}>
-          <Divider sx={{ my: 2 }} />
-
-          <Typography
-            sx={{
-              fontSize: 18,
-              fontWeight: 600,
-              mb: 1,
-            }}
-          >
-            Description
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: 15,
-              color: "#444",
-            }}
-          >
-            {ticket.details?.description || "-"}
-          </Typography>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Typography
-            sx={{
-              fontSize: 18,
-              fontWeight: 600,
-              mb: 1,
-            }}
-          >
-            Ticket Details
-          </Typography>
-
-          <Row label="Submitted on" value={ticket.createdDate || "-"} />
-
-          <Row label="Ticket Number" value={`#${ticket.ticketNumber ?? "-"}`} />
-
-          {/* <Row
-            label="Attachments"
-            value={
-              ticket.details?.attachments?.length
-                ? ticket.attachments.map((a) => a.name).join(", ")
-                : "No attachment found"
-            }
-          /> */}
-
-          {ticket.details?.resolution && (
+          {ticket.loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                py: 3,
+              }}
+            >
+              <CircularProgress size={24} />
+            </Box>
+          ) : (
             <>
-              <Divider sx={{ my: 1 }} />
+              <Divider sx={{ my: 2 }} />
 
               <Typography
                 sx={{
@@ -195,7 +162,7 @@ const TicketCard = ({ ticket, onLoadDetails }: TicketCardProps) => {
                   mb: 1,
                 }}
               >
-                Resolution
+                Description
               </Typography>
 
               <Typography
@@ -204,8 +171,61 @@ const TicketCard = ({ ticket, onLoadDetails }: TicketCardProps) => {
                   color: "#444",
                 }}
               >
-                {ticket.details?.resolution}
+                {ticket.details?.description || "-"}
               </Typography>
+
+              <Divider sx={{ my: 2 }} />
+
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  mb: 1,
+                }}
+              >
+                Ticket Details
+              </Typography>
+
+              <Row label="Submitted on" value={ticket.createdDate || "-"} />
+
+              <Row
+                label="Ticket Number"
+                value={`#${ticket.ticketNumber ?? "-"}`}
+              />
+
+              {/* <Row
+            label="Attachments"
+            value={
+              ticket.details?.attachments?.length
+                ? ticket.attachments.map((a) => a.name).join(", ")
+                : "No attachment found"
+            }
+          /> */}
+
+              {ticket.details?.resolution && (
+                <>
+                  <Divider sx={{ my: 1 }} />
+
+                  <Typography
+                    sx={{
+                      fontSize: 18,
+                      fontWeight: 600,
+                      mb: 1,
+                    }}
+                  >
+                    Resolution
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      fontSize: 15,
+                      color: "#444",
+                    }}
+                  >
+                    {ticket.details?.resolution}
+                  </Typography>
+                </>
+              )}
             </>
           )}
         </Collapse>

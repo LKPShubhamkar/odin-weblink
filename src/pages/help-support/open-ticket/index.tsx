@@ -22,7 +22,12 @@ const OpenTicket = () => {
           ticketType: 1, // Open tickets
         });
 
-        setTickets(response ?? []);
+        setTickets(
+          (response ?? []).map((item: any) => ({
+            ...item,
+            loading: false,
+          })),
+        );
       } catch (err) {
         console.error(err);
       }
@@ -32,11 +37,20 @@ const OpenTicket = () => {
   }, []);
 
   const handleLoadDetails = async (ticketId: string) => {
+    setTickets((prev) =>
+      prev.map((item) =>
+        item.id === ticketId
+          ? {
+              ...item,
+              loading: true,
+            }
+          : item,
+      ),
+    );
     try {
       const response = await commonApi("Zoho/GetTicketDetailsById_Internal", {
         ticketId,
       });
-      console.log(response);
 
       setTickets((prev) =>
         prev.map((item) =>
@@ -44,12 +58,23 @@ const OpenTicket = () => {
             ? {
                 ...item,
                 details: response,
+                loading: false,
               }
             : item,
         ),
       );
     } catch (err) {
       console.error(err);
+      setTickets((prev) =>
+        prev.map((item) =>
+          item.id === ticketId
+            ? {
+                ...item,
+                loading: false,
+              }
+            : item,
+        ),
+      );
     }
   };
   return (
