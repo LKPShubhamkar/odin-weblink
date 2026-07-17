@@ -5,7 +5,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import { commonApi } from "../../services";
@@ -23,6 +23,7 @@ interface RMDetailsData {
 const RmDetails = () => {
   const [data, setData] = useState<RMDetailsData | null>(null);
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   useEffect(() => {
     const fetchBankDetails = async () => {
@@ -75,7 +76,7 @@ const RmDetails = () => {
       <Header
         title="Relation Manager Details"
         showBack
-        onBack={() => navigate("/")}
+        onBack={() => navigate(`/${search}`)}
       />
 
       <Container

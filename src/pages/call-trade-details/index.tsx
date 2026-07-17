@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
@@ -27,13 +27,14 @@ const data = [
 
 const CallTradeDetails = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   return (
     <>
       <Header
         title="Call & Trade Details"
         showBack
-        onBack={() => navigate("/")}
+        onBack={() => navigate(`/${search}`)}
       />
 
       <Container

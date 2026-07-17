@@ -32,7 +32,11 @@ const HelpSupport = () => {
 
   return (
     <>
-      <Header title="Help & Support" showBack onBack={() => navigate("/")} />
+      <Header
+        title="Help & Support"
+        showBack
+        onBack={() => navigate(`/${search}`)}
+      />
 
       <Container
         maxWidth="lg"
