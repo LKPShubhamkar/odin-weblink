@@ -10,15 +10,17 @@ import {
 } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import Header from "../../../components/Header";
+import { commonApi } from "../../../services";
 
 const RaiseTicket = () => {
   const navigate = useNavigate();
-
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [subject, setSubject] = useState("");
   const [description, setDescription] = useState("");
   const [fileName, setFileName] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -30,7 +32,88 @@ const RaiseTicket = () => {
       return;
     }
 
+    setSelectedFile(file);
     setFileName(file.name);
+  };
+
+  const convertToBase64 = async (file: File): Promise<string> => {
+    const buffer = await file.arrayBuffer();
+
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
+  };
+
+  const handleSubmit = async () => {
+    if (!subject.trim()) {
+      alert("Please enter subject");
+      return;
+    }
+
+    if (!description.trim()) {
+      alert("Please enter description");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
+
+      const attachmentList: {
+        attachmentName: string;
+        attachmentContent: string;
+      }[] = [];
+
+      if (selectedFile) {
+        const base64 = await convertToBase64(selectedFile);
+
+        console.log("Base64 Preview:", base64.substring(0, 50));
+        console.log("Base64 Length:", base64.length);
+
+        attachmentList.push({
+          attachmentName: selectedFile.name,
+          attachmentContent: base64,
+        });
+      }
+
+      const payload = {
+        clientCode,
+        subject,
+        description,
+        attachmentList,
+      };
+
+      console.log("Payload:", payload);
+
+      const response = await commonApi("Zoho/InsertTicket_Internal", payload);
+
+      console.log("Response:", response);
+
+      alert("Ticket raised successfully.");
+
+      setSubject("");
+      setDescription("");
+      setFileName("");
+      setSelectedFile(null);
+
+      if (fileRef.current) {
+        fileRef.current.value = "";
+      }
+
+      navigate("/help-support");
+    } catch (err) {
+      console.error(err);
+      alert("Unable to raise ticket.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -65,10 +148,10 @@ const RaiseTicket = () => {
           <Stack spacing={2}>
             <TextField
               fullWidth
+              size="small"
               placeholder="Enter Subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              size="small"
             />
 
             <TextField
@@ -96,8 +179,8 @@ const RaiseTicket = () => {
               <Stack
                 sx={{
                   flexDirection: "row",
-                  gap: 1,
                   alignItems: "center",
+                  gap: 1,
                 }}
               >
                 <DescriptionOutlinedIcon
@@ -113,7 +196,7 @@ const RaiseTicket = () => {
                     color: fileName ? "#222" : "#8E8E8E",
                   }}
                 >
-                  {fileName || "Attached a File"}
+                  {fileName || "Attach a File"}
                 </Typography>
               </Stack>
 
@@ -130,7 +213,7 @@ const RaiseTicket = () => {
                 ref={fileRef}
                 hidden
                 type="file"
-                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
                 onChange={handleFileChange}
               />
             </Box>
@@ -146,6 +229,8 @@ const RaiseTicket = () => {
             <Button
               fullWidth
               variant="contained"
+              disabled={loading}
+              onClick={handleSubmit}
               sx={{
                 height: 48,
                 borderRadius: "8px",
@@ -159,11 +244,8 @@ const RaiseTicket = () => {
                   md: 160,
                 },
               }}
-              onClick={() => {
-                console.log(subject, description, fileName);
-              }}
             >
-              Submit
+              {loading ? "Submitting..." : "Submit"}
             </Button>
           </Box>
         </Box>

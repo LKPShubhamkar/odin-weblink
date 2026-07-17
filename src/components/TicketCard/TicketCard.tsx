@@ -24,13 +24,19 @@ interface Ticket {
   createdDate: string;
 }
 
+interface TicketDetail {
+  description: string;
+  modifiedDate: string;
+  attachments: Attachment[];
+  resolution: string | null;
+}
+
 interface TicketCardProps {
   ticket: Ticket & {
-    description: string;
-    modifiedDate: string;
-    attachments: Attachment[];
-    resolution: string | null;
+    details?: TicketDetail;
   };
+
+  onLoadDetails: (ticketId: string) => Promise<void>;
 }
 
 const Row = ({ label, value }: { label: string; value: string }) => (
@@ -65,7 +71,7 @@ const Row = ({ label, value }: { label: string; value: string }) => (
   </Stack>
 );
 
-const TicketCard = ({ ticket }: TicketCardProps) => {
+const TicketCard = ({ ticket, onLoadDetails }: TicketCardProps) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -113,8 +119,16 @@ const TicketCard = ({ ticket }: TicketCardProps) => {
             </Typography>
             {/* </Box> */}
           </Stack>
+          <IconButton
+            size="small"
+            onClick={() => {
+              setExpanded((prev) => !prev);
 
-          <IconButton size="small" onClick={() => setExpanded((prev) => !prev)}>
+              if (!expanded && !ticket.details) {
+                onLoadDetails(ticket.id);
+              }
+            }}
+          >
             {expanded ? (
               <RemoveCircleOutlineOutlinedIcon />
             ) : (
@@ -142,7 +156,7 @@ const TicketCard = ({ ticket }: TicketCardProps) => {
               color: "#444",
             }}
           >
-            {ticket?.description || "-"}
+            {ticket.details?.description || "-"}
           </Typography>
 
           <Divider sx={{ my: 2 }} />
@@ -157,23 +171,20 @@ const TicketCard = ({ ticket }: TicketCardProps) => {
             Ticket Details
           </Typography>
 
-          <Row label="Submitted on" value={ticket?.createdDate || "-"} />
+          <Row label="Submitted on" value={ticket.createdDate || "-"} />
 
-          <Row
-            label="Ticket Number"
-            value={`#${ticket?.ticketNumber ?? "-"}`}
-          />
+          <Row label="Ticket Number" value={`#${ticket.ticketNumber ?? "-"}`} />
 
           {/* <Row
             label="Attachments"
             value={
-              ticket?.attachments?.length
+              ticket.details?.attachments?.length
                 ? ticket.attachments.map((a) => a.name).join(", ")
                 : "No attachment found"
             }
           /> */}
 
-          {ticket?.resolution && (
+          {ticket.details?.resolution && (
             <>
               <Divider sx={{ my: 1 }} />
 
@@ -193,7 +204,7 @@ const TicketCard = ({ ticket }: TicketCardProps) => {
                   color: "#444",
                 }}
               >
-                {ticket?.resolution}
+                {ticket.details?.resolution}
               </Typography>
             </>
           )}

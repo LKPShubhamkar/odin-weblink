@@ -1,39 +1,61 @@
 import { Box, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../../components/Header";
-import { useMemo } from "react";
-import TicketCard from "./TicketCard/TicketCard";
-import { ticketDetails, ticketList } from "../../../helper/commonData";
+import { useEffect, useState } from "react";
+import TicketCard from "../../../components/TicketCard/TicketCard";
+import { commonApi } from "../../../services";
 
 // Sample List API Response
 
 const OpenTicket = () => {
+  const [tickets, setTickets] = useState<any[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const tickets = useMemo(() => {
-    return ticketList
-      .filter((ticket) => ticket.status === "Open")
-      .map((ticket) => {
-        const detail = ticketDetails.find(
-          (item) => item.ticketId === ticket.id,
-        );
+  useEffect(() => {
+    const getTickets = async () => {
+      try {
+        const response = await commonApi("Zoho/GetTickets_Internal", {
+          clientCode: "l4tGcc34QnIS5IM5ELZSnQ==",
+          ticketType: 2, // Open tickets
+        });
 
-        return {
-          ...ticket,
-          description: detail?.description ?? "",
-          attachments: detail?.attachments ?? [],
-          resolution: detail?.resolution ?? "",
-          modifiedDate: detail?.modifiedDate ?? "",
-        };
-      });
+        setTickets(response ?? []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getTickets();
   }, []);
 
+  const handleLoadDetails = async (ticketId: string) => {
+    try {
+      const response = await commonApi("Zoho/GetTicketDetailsById_Internal", {
+        ticketId,
+      });
+      console.log(response);
+
+      setTickets((prev) =>
+        prev.map((item) =>
+          item.id === ticketId
+            ? {
+                ...item,
+                details: response,
+              }
+            : item,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <Header
         title="Open Ticket"
         showBack
-        onBack={() => navigate("/help-support")}
+        onBack={() => navigate(`/help-support${location.search}`)}
       />
 
       <Container
@@ -59,7 +81,11 @@ const OpenTicket = () => {
           }}
         >
           {tickets.map((ticket) => (
-            <TicketCard key={ticket.id} ticket={ticket} />
+            <TicketCard
+              key={ticket.id}
+              ticket={ticket}
+              onLoadDetails={handleLoadDetails}
+            />
           ))}
         </Box>
       </Container>

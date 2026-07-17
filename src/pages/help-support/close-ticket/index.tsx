@@ -1,29 +1,51 @@
 import Header from "../../../components/Header";
 import { Box, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ticketDetails, ticketList } from "../../../helper/commonData";
-import { useMemo } from "react";
-import TicketCard from "../open-ticket/TicketCard/TicketCard";
+import { useEffect, useState } from "react";
+import TicketCard from "../../../components/TicketCard/TicketCard";
+import { commonApi } from "../../../services";
 
 const CloseTicket = () => {
+  const [tickets, setTickets] = useState<any[]>([]);
   const navigate = useNavigate();
-  const tickets = useMemo(() => {
-    return ticketList
-      .filter((ticket) => ticket.status === "Closed")
-      .map((ticket) => {
-        const detail = ticketDetails.find(
-          (item) => item.ticketId === ticket.id,
-        );
+  useEffect(() => {
+    const getTickets = async () => {
+      try {
+        const response = await commonApi("Zoho/GetTickets_Internal", {
+          clientCode: "PP000474",
+          ticketType: 1, // Open tickets
+        });
 
-        return {
-          ...ticket,
-          description: detail?.description ?? "",
-          attachments: detail?.attachments ?? [],
-          resolution: detail?.resolution ?? "",
-          modifiedDate: detail?.modifiedDate ?? "",
-        };
-      });
+        setTickets(response ?? []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getTickets();
   }, []);
+
+  const handleLoadDetails = async (ticketId: string) => {
+    try {
+      const response = await commonApi("Zoho/GetTicketDetailsById_Internal", {
+        ticketId,
+      });
+      console.log(response);
+
+      setTickets((prev) =>
+        prev.map((item) =>
+          item.id === ticketId
+            ? {
+                ...item,
+                details: response,
+              }
+            : item,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <Header
@@ -55,7 +77,11 @@ const CloseTicket = () => {
           }}
         >
           {tickets.map((ticket) => (
-            <TicketCard key={ticket.id} ticket={ticket} />
+            <TicketCard
+              key={ticket.id}
+              ticket={ticket}
+              onLoadDetails={handleLoadDetails}
+            />
           ))}
         </Box>
       </Container>
