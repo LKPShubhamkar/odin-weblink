@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 
 const menus = [
@@ -28,6 +28,7 @@ const menus = [
 
 const HelpSupport = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   return (
     <>
@@ -118,7 +119,7 @@ const HelpSupport = () => {
             {menus.map((item) => (
               <Box key={item.title}>
                 <ListItemButton
-                  onClick={() => navigate(item.path)}
+                  onClick={() => navigate(`${item.path}${search}`)}
                   sx={{
                     px: 0,
                     py: 2,

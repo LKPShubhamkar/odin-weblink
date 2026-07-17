@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import { commonApi } from "../../../services";
 
 const RaiseTicket = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [subject, setSubject] = useState("");
@@ -121,7 +122,7 @@ const RaiseTicket = () => {
       <Header
         title="Raise a Ticket"
         showBack
-        onBack={() => navigate("/help-support")}
+        onBack={() => navigate(`/help-support${search}`)}
       />
 
       <Container

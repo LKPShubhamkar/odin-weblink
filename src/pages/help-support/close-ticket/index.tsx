@@ -1,6 +1,6 @@
 import Header from "../../../components/Header";
 import { Box, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TicketCard from "../../../components/TicketCard/TicketCard";
 import { commonApi } from "../../../services";
@@ -8,12 +8,16 @@ import { commonApi } from "../../../services";
 const CloseTicket = () => {
   const [tickets, setTickets] = useState<any[]>([]);
   const navigate = useNavigate();
+  const { search } = useLocation();
+
   useEffect(() => {
     const getTickets = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
       try {
         const response = await commonApi("Zoho/GetTickets_Internal", {
-          clientCode: "PP000474",
-          ticketType: 1, // Open tickets
+          clientCode,
+          ticketType: 2, // Open tickets
         });
 
         setTickets(response ?? []);
@@ -51,7 +55,7 @@ const CloseTicket = () => {
       <Header
         title="Close Ticket"
         showBack
-        onBack={() => navigate("/help-support")}
+        onBack={() => navigate(`/help-support${search}`)}
       />
 
       <Container

@@ -10,14 +10,16 @@ import { commonApi } from "../../../services";
 const OpenTicket = () => {
   const [tickets, setTickets] = useState<any[]>([]);
   const navigate = useNavigate();
-  const location = useLocation();
+  const { search } = useLocation();
 
   useEffect(() => {
     const getTickets = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const clientCode = params.get("clientcode")?.replace(/ /g, "+");
       try {
         const response = await commonApi("Zoho/GetTickets_Internal", {
-          clientCode: "l4tGcc34QnIS5IM5ELZSnQ==",
-          ticketType: 2, // Open tickets
+          clientCode,
+          ticketType: 1, // Open tickets
         });
 
         setTickets(response ?? []);
@@ -55,7 +57,7 @@ const OpenTicket = () => {
       <Header
         title="Open Ticket"
         showBack
-        onBack={() => navigate(`/help-support${location.search}`)}
+        onBack={() => navigate(`/help-support${search}`)}
       />
 
       <Container
