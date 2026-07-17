@@ -1,5 +1,5 @@
 import { Box, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../../components/Header";
 import { useEffect, useState } from "react";
 import TicketCard from "../../../components/TicketCard/TicketCard";
@@ -10,33 +10,17 @@ import { commonApi } from "../../../services";
 const OpenTicket = () => {
   const [tickets, setTickets] = useState<any[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // const tickets = useMemo(() => {
-  //   return ticketList
-  //     .filter((ticket) => ticket.status === "Open")
-  //     .map((ticket) => {
-  //       const detail = ticketDetails.find(
-  //         (item) => item.ticketId === ticket.id,
-  //       );
-
-  //       return {
-  //         ...ticket,
-  //         description: detail?.description ?? "",
-  //         attachments: detail?.attachments ?? [],
-  //         resolution: detail?.resolution ?? "",
-  //         modifiedDate: detail?.modifiedDate ?? "",
-  //       };
-  //     });
-  // }, []);
   useEffect(() => {
     const getTickets = async () => {
       try {
-        const response = await commonApi("LKPZoho/GetTickets", {
-          clientCode: "PP000474",
-          ticketType: 1, // Open tickets
+        const response = await commonApi("Zoho/GetTickets_Internal", {
+          clientCode: "l4tGcc34QnIS5IM5ELZSnQ==",
+          ticketType: 2, // Open tickets
         });
 
-        setTickets(response?.data ?? []);
+        setTickets(response ?? []);
       } catch (err) {
         console.error(err);
       }
@@ -44,18 +28,20 @@ const OpenTicket = () => {
 
     getTickets();
   }, []);
+
   const handleLoadDetails = async (ticketId: string) => {
     try {
-      const response = await commonApi("LKPZoho/GetTicketDetailsById", {
+      const response = await commonApi("Zoho/GetTicketDetailsById_Internal", {
         ticketId,
       });
+      console.log(response);
 
       setTickets((prev) =>
         prev.map((item) =>
           item.id === ticketId
             ? {
                 ...item,
-                details: response.data,
+                details: response,
               }
             : item,
         ),
@@ -69,7 +55,7 @@ const OpenTicket = () => {
       <Header
         title="Open Ticket"
         showBack
-        onBack={() => navigate("/help-support")}
+        onBack={() => navigate(`/help-support${location.search}`)}
       />
 
       <Container
