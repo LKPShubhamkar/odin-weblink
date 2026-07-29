@@ -9,7 +9,7 @@ import {
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Container } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
+// import Header from "../../components/Header";
 
 const menus = [
   {
@@ -32,11 +32,11 @@ const HelpSupport = () => {
 
   return (
     <>
-      <Header
+      {/* <Header
         title="Help & Support"
         showBack
         onBack={() => navigate(`/${search}`)}
-      />
+      /> */}
 
       <Container
         maxWidth="lg"

@@ -29,7 +29,7 @@ const Main = () => {
   return (
     <>
       <Header
-        title={selectedPage ? pageTitles[selectedPage] : "Account Details"}
+        title={selectedPage ? pageTitles[selectedPage] : ""}
         showBack={!!selectedPage}
         onBack={() => setSelectedPage(null)}
       />

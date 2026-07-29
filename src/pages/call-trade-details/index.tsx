@@ -6,8 +6,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import Header from "../../components/Header";
 
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
@@ -26,16 +26,16 @@ const data = [
 ];
 
 const CallTradeDetails = () => {
-  const navigate = useNavigate();
-  const { search } = useLocation();
+  // const navigate = useNavigate();
+  // const { search } = useLocation();
 
   return (
     <>
-      <Header
+      {/* <Header
         title="Call & Trade Details"
         showBack
         onBack={() => navigate(`/${search}`)}
-      />
+      /> */}
 
       <Container
         maxWidth="lg"
